@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MusicXML Slideshow</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <link rel="stylesheet" href="node_modules/reveal.js/css/reveal.css">
+  <link rel="stylesheet" href="node_modules/reveal.js/css/theme/black.css">
+  <!-- <link rel="stylesheet" href="node_modules/dynamic-presentation/css/dynamic-presentation.css"> -->
+</head>
+<body>
+
+  <input type="file" id="fileInput" accept=".musicxml,.xml">
+  
+  <div class="reveal">
+    <div class="slides">
+      <section data-musicxml="">
+        <script type="text/template"></script>
+      </section>
+    </div>
+  </div>
+
+  <script src="node_modules/reveal.js/js/reveal.js"></script>
+  <script src="https://www.verovio.org/javascript/4.1.0/verovio-toolkit.js"></script>
+  <script type="module">
+    import { MusicXMLTransformer } from './node_modules/dynamic-presentation/js/MusicXMLTransformer.js';
+    import { MusicToolkit } from './node_modules/dynamic-presentation/js/MusicToolkit.js';
+    import { RevealMusicXML } from './node_modules/dynamic-presentation/js/RevealMusicXML.js';
+
+    const fileInput = document.getElementById('fileInput');
+    const templateScript = document.querySelector('script[type="text/template"]');
+
+    fileInput.addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const musicXML = e.target.result;
+        templateScript.textContent = musicXML;
+
+        const revealMusicXML = new RevealMusicXML(MusicToolkit, new MusicXMLTransformer());
+        revealMusicXML.init().then(() => {
+          Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+            mouseWheel: false,
+            transition: 'slide'
+          });
+        });
+      };
+
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>

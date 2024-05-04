@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "dynamic-presentation": "git+https://gitlab.ccel.org/hymnary/dynamic-presentation.git",
+    "reveal.js": "github:christian-classics-ethereal-library/reveal.js#ccel-2023-01-11",
+    "verovio": "^4.1.0"
+  }
+}
